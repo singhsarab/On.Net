@@ -4,27 +4,26 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- master
+  - master
 
 strategy:
   matrix:
     linux:
-      imageName: 'ubuntu-16.04'
+      imageName: "ubuntu-16.04"
     windows:
-      imageName: 'vs2017-win2016'
+      imageName: "vs2017-win2016"
 
-Jobs:
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: "ubuntu-latest"
 
 variables:
-  buildConfiguration: 'Release'
+  buildConfiguration: "Release"
 
 steps:
-- task: DotNetCoreInstaller@0
-  displayName: 'Use .NET Core sdk 3.0.100-preview5-011568'
-  inputs:
-    version: '3.0.100-preview5-011568'
+  - task: DotNetCoreInstaller@0
+    displayName: "Use .NET Core sdk 3.0.100-preview5-011568"
+    inputs:
+      version: "3.0.100-preview5-011568"
 
-- script: dotnet test --configuration $(buildConfiguration)
-  displayName: 'dotnet test $(buildConfiguration)'
+  - script: dotnet test --configuration $(buildConfiguration)
+    displayName: "dotnet test $(buildConfiguration)"
