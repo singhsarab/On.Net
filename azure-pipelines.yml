@@ -6,17 +6,40 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'ubuntu-latest'
 
-variables:
-  buildConfiguration: 'Release'
+Jobs:
+- Job: Linux
+    pool:
+      vmImage: 'ubuntu-latest'
 
-steps:
-- task: DotNetCoreInstaller@0
-  displayName: 'Use .NET Core sdk 3.0.100-preview5-011568'
-  inputs:
-    version: '3.0.100-preview5-011568'
+    variables:
+      buildConfiguration: 'Release'
 
-- script: dotnet test --configuration $(buildConfiguration)
-  displayName: 'dotnet test $(buildConfiguration)'
+    steps:
+    - task: DotNetCoreInstaller@0
+      displayName: 'Use .NET Core sdk 3.0.100-preview5-011568'
+      inputs:
+        version: '3.0.100-preview5-011568'
+
+    - script: dotnet test --configuration $(buildConfiguration)
+      displayName: 'dotnet test $(buildConfiguration)'
+
+- Job: Windows
+    pool:
+        name: Hosted VS2017
+        demands:
+        - msbuild
+        - visualstudio
+        - vstest
+
+    variables:
+      buildConfiguration: 'Release'
+
+    steps:
+    - task: DotNetCoreInstaller@0
+      displayName: 'Use .NET Core sdk 3.0.100-preview5-011568'
+      inputs:
+        version: '3.0.100-preview5-011568'
+
+    - script: dotnet test --configuration $(buildConfiguration)
+      displayName: 'dotnet test $(buildConfiguration)'
